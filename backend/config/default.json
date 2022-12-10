@@ -1,3 +1,3 @@
 {
-  "mongoURI": "mongodb+srv://krisnafirdaus:krisna123@cluster0.fhggtmp.mongodb.net/test"
+  "mongoURI": "mongodb+srv://krisnafirdaus:password@cluster0.fhggtmp.mongodb.net/test"
 }

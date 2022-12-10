@@ -1,8 +1,8 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 const config = require("config");
-import UserRoute from "./routes/routes";
+const UserRoute = require("./routes/routes");
 
 const app = express();
 
@@ -17,4 +17,4 @@ app.use(cors());
 app.use(express.json());
 app.use(UserRoute);
 
-app.listen(6000, () => console.log("Server up and running..."));
+app.listen(8000, () => console.log("Server up and running..."));

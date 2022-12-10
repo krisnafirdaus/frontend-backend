@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Add = () => {
   const [data, setData] = useState({
@@ -10,11 +10,30 @@ const Add = () => {
     price: 0,
   });
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const saveUser = async (e) => {
+  useEffect(() => {
+    if (id) {
+      getUserById();
+    }
+  }, [id]);
+
+  const getUserById = () => {
+    axios.get(`http://localhost:8000/users/${id}`).then((res) =>
+      setData({
+        ...data,
+        name: res.data.name,
+        color: res.data.color,
+        price: res.data.price,
+        category: res.data.category,
+      })
+    );
+  };
+
+  const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:6000/users", {
+      await axios.patch(`http://localhost:8000/users/${id}`, {
         ...data,
       });
       navigate("/");
@@ -23,14 +42,22 @@ const Add = () => {
     }
   };
 
+  const saveUser = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:8000/users", {
+        ...data,
+      })
+      .then(() => navigate("/"))
+      .catch((err) => console.log(err));
+  };
+
   const handleChange = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log(data);
 
   return (
     <div className="columns mt-5">
@@ -101,7 +128,7 @@ const Add = () => {
       <div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 w-full rounded"
-          onClick={saveUser}
+          onClick={id ? updateUser : saveUser}
         >
           Submit
         </button>
